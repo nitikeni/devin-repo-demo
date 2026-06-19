@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Webapp - Collect Feedback</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Survey Form</h1>
+            <p class="subtitle">We'd love to hear your feedback</p>
+        </header>
+
+        <main>
+            <!-- Survey View -->
+            <div id="surveyView" class="view active">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0% Complete</div>
+                </div>
+
+                <form id="surveyForm" class="form-section">
+                    <!-- Form fields will be dynamically generated here -->
+                </form>
+
+                <div class="button-group">
+                    <button type="submit" form="surveyForm" class="btn btn-success">
+                        ✓ Submit Survey
+                    </button>
+                    <button type="button" id="viewResultsBtn" class="btn btn-primary">
+                        📊 View Results
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results View -->
+            <div id="resultsView" class="view">
+                <div class="alert alert-info">
+                    <span>📊</span>
+                    <div>
+                        <strong>Survey Results</strong>
+                        <p>Below are all the responses collected from the survey.</p>
+                    </div>
+                </div>
+
+                <div class="results-summary">
+                    <div class="summary-card">
+                        <h3>Total Responses</h3>
+                        <div class="value" id="totalResponses">0</div>
+                    </div>
+                    <div class="summary-card success">
+                        <h3>Completion Rate</h3>
+                        <div class="value" id="completionRate">0%</div>
+                    </div>
+                    <div class="summary-card warning">
+                        <h3>Last Response</h3>
+                        <div class="value" id="lastResponse" style="font-size: 1.2em; font-weight: 500;">--</div>
+                    </div>
+                </div>
+
+                <div id="responsesList" class="results-container">
+                    <!-- Responses will be displayed here -->
+                </div>
+
+                <div class="button-group">
+                    <button type="button" id="backToSurveyBtn" class="btn btn-secondary">
+                        ← Back to Survey
+                    </button>
+                    <button type="button" id="downloadResultsBtn" class="btn btn-primary">
+                        ⬇ Download Results
+                    </button>
+                    <button type="button" id="clearAllDataBtn" class="btn btn-danger">
+                        🗑 Clear All Data
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Survey Webapp. All rights reserved. | Built with ❤️</p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
