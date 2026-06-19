@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance Webapp</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Student Attendance System</h1>
+            <p class="subtitle">Track and manage student attendance efficiently</p>
+        </header>
+
+        <main>
+            <!-- Add Student Section -->
+            <section class="section add-student-section">
+                <h2>Add New Student</h2>
+                <form id="addStudentForm" class="form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentName">Student Name:</label>
+                            <input type="text" id="studentName" name="studentName" required placeholder="Enter student name">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentId">Student ID:</label>
+                            <input type="text" id="studentId" name="studentId" required placeholder="Enter student ID">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="studentEmail">Email:</label>
+                            <input type="email" id="studentEmail" name="studentEmail" placeholder="Enter student email">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentRoll">Roll Number:</label>
+                            <input type="text" id="studentRoll" name="studentRoll" placeholder="Enter roll number">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Student</button>
+                </form>
+            </section>
+
+            <!-- Attendance Section -->
+            <section class="section attendance-section">
+                <div class="section-header">
+                    <h2>Mark Attendance</h2>
+                    <div class="date-selector">
+                        <label for="attendanceDate">Date:</label>
+                        <input type="date" id="attendanceDate">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table id="attendanceTable" class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Student Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <p id="noStudentsMessage" class="no-data-message">No students added yet. Add a student to get started.</p>
+                </div>
+                <div class="attendance-actions">
+                    <button id="saveAttendanceBtn" class="btn btn-success">Save Attendance</button>
+                    <button id="clearAttendanceBtn" class="btn btn-secondary">Clear All</button>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section class="section reports-section">
+                <h2>Attendance Reports</h2>
+                
+                <!-- Report Filters -->
+                <div class="report-filters">
+                    <div class="filter-group">
+                        <label for="reportStartDate">Start Date:</label>
+                        <input type="date" id="reportStartDate">
+                    </div>
+                    <div class="filter-group">
+                        <label for="reportEndDate">End Date:</label>
+                        <input type="date" id="reportEndDate">
+                    </div>
+                    <button id="applyFiltersBtn" class="btn btn-primary">Apply Filters</button>
+                    <button id="resetFiltersBtn" class="btn btn-secondary">Reset</button>
+                </div>
+
+                <!-- Overall Statistics -->
+                <div class="reports-container">
+                    <div class="report-card">
+                        <h3>Overall Statistics</h3>
+                        <div id="overallStats" class="stats-content">
+                            <p>Total Students: <span id="totalStudents">0</span></p>
+                            <p>Total Records: <span id="totalRecords">0</span></p>
+                            <p>Total Classes Held: <span id="totalClasses">0</span></p>
+                            <p>Average Attendance: <span id="averageAttendance">0</span>%</p>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Class Statistics</h3>
+                        <div id="classStats" class="stats-content">
+                            <p>Present: <span id="classPresent" class="stat-present">0</span></p>
+                            <p>Absent: <span id="classAbsent" class="stat-absent">0</span></p>
+                            <p>Leave: <span id="classLeave" class="stat-leave">0</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Attendance History -->
+                <div class="report-card full-width">
+                    <h3>Student Attendance History</h3>
+                    <div class="history-controls">
+                        <select id="studentFilterSelect" class="form-control">
+                            <option value="">Select a student...</option>
+                        </select>
+                    </div>
+                    <div id="studentHistoryContent" class="history-content">
+                        <p>Select a student to view attendance history</p>
+                    </div>
+                </div>
+
+                <!-- Attendance Summary Table -->
+                <div class="report-card full-width">
+                    <h3>Attendance Summary</h3>
+                    <div class="table-wrapper">
+                        <table id="summaryTable" class="summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Student Name</th>
+                                    <th>Student ID</th>
+                                    <th>Total Classes</th>
+                                    <th>Present</th>
+                                    <th>Absent</th>
+                                    <th>Leave</th>
+                                    <th>Attendance %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="summaryTableBody">
+                                <!-- Rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Report Actions -->
+                <div class="report-actions">
+                    <button id="exportReportBtn" class="btn btn-info">Export as JSON</button>
+                    <button id="exportCSVBtn" class="btn btn-info">Export as CSV</button>
+                    <button id="printReportBtn" class="btn btn-info">Print Report</button>
+                    <button id="clearAllDataBtn" class="btn btn-danger">Clear All Data</button>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Student Attendance System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
