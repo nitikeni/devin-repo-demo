@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initialize Sample Data - Student Attendance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #333;
+        }
+        .info-box strong {
+            color: #667eea;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            flex: 1;
+            min-width: 150px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+            display: block;
+        }
+        .data-preview {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .data-preview h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        .data-preview ul {
+            list-style: none;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .data-preview li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .data-preview li:last-child {
+            border-bottom: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Sample Data Initialization</h1>
+        <p class="subtitle">Load sample student and attendance data for testing</p>
+        
+        <div class="info-box">
+            <strong>ℹ️ What this does:</strong>
+            <p>This will load 5 sample students with attendance records for the past 2 days into your browser's local storage. You can then test all features of the attendance system.</p>
+        </div>
+        
+        <div id="status" class="status"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading sample data...</p>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn-primary" onclick="initializeSampleData()">Load Sample Data</button>
+            <button class="btn-secondary" onclick="goToApp()">Go to App</button>
+        </div>
+        
+        <div class="data-preview" id="preview" style="display: none;">
+            <h3>📋 Sample Data Overview:</h3>
+            <ul>
+                <li><strong>Students:</strong> 5 sample students (STU001-STU005)</li>
+                <li><strong>Attendance Records:</strong> 10 records across 2 days</li>
+                <li><strong>Status Distribution:</strong> Present, Absent, Leave</li>
+                <li><strong>Date Range:</strong> June 17-18, 2024</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        function initializeSampleData() {
+            showLoading(true);
+            
+            // Simulate network delay
+            setTimeout(() => {
+                try {
+                    const sampleData = {
+                        students: [
+                            {
+                                id: 'uuid-1',
+                                name: 'John Doe',
+                                email: 'john.doe@example.com',
+                                rollNumber: 'STU001',
+                                enrollmentDate: '2024-01-15',
+                                createdAt: '2024-01-15T10:00:00Z'
+                            },
+                            {
+                                id: 'uuid-2',
+                                name: 'Jane Smith',
+                                email: 'jane.smith@example.com',
+                                rollNumber: 'STU002',
+                                enrollmentDate: '2024-01-15',
+                                createdAt: '2024-01-15T10:05:00Z'
+                            },
+                            {
+                                id: 'uuid-3',
+                                name: 'Michael Johnson',
+                                email: 'michael.j@example.com',
+                                rollNumber: 'STU003',
+                                enrollmentDate: '2024-01-15',
+                                createdAt: '2024-01-15T10:10:00Z'
+                            },
+                            {
+                                id: 'uuid-4',
+                                name: 'Emily Davis',
+                                email: 'emily.davis@example.com',
+                                rollNumber: 'STU004',
+                                enrollmentDate: '2024-01-15',
+                                createdAt: '2024-01-15T10:15:00Z'
+                            },
+                            {
+                                id: 'uuid-5',
+                                name: 'Robert Wilson',
+                                email: 'robert.w@example.com',
+                                rollNumber: 'STU005',
+                                enrollmentDate: '2024-01-15',
+                                createdAt: '2024-01-15T10:20:00Z'
+                            }
+                        ],
+                        attendance: [
+                            {
+                                id: 'att-1',
+                                studentId: 'uuid-1',
+                                date: '2024-06-18',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-18T09:00:00Z'
+                            },
+                            {
+                                id: 'att-2',
+                                studentId: 'uuid-2',
+                                date: '2024-06-18',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-18T09:05:00Z'
+                            },
+                            {
+                                id: 'att-3',
+                                studentId: 'uuid-3',
+                                date: '2024-06-18',
+                                status: 'absent',
+                                remarks: 'Sick leave',
+                                recordedAt: '2024-06-18T09:10:00Z'
+                            },
+                            {
+                                id: 'att-4',
+                                studentId: 'uuid-4',
+                                date: '2024-06-18',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-18T09:15:00Z'
+                            },
+                            {
+                                id: 'att-5',
+                                studentId: 'uuid-5',
+                                date: '2024-06-18',
+                                status: 'leave',
+                                remarks: 'Approved leave',
+                                recordedAt: '2024-06-18T09:20:00Z'
+                            },
+                            {
+                                id: 'att-6',
+                                studentId: 'uuid-1',
+                                date: '2024-06-17',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-17T09:00:00Z'
+                            },
+                            {
+                                id: 'att-7',
+                                studentId: 'uuid-2',
+                                date: '2024-06-17',
+                                status: 'absent',
+                                remarks: '',
+                                recordedAt: '2024-06-17T09:05:00Z'
+                            },
+                            {
+                                id: 'att-8',
+                                studentId: 'uuid-3',
+                                date: '2024-06-17',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-17T09:10:00Z'
+                            },
+                            {
+                                id: 'att-9',
+                                studentId: 'uuid-4',
+                                date: '2024-06-17',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-17T09:15:00Z'
+                            },
+                            {
+                                id: 'att-10',
+                                studentId: 'uuid-5',
+                                date: '2024-06-17',
+                                status: 'present',
+                                remarks: '',
+                                recordedAt: '2024-06-17T09:20:00Z'
+                            }
+                        ]
+                    };
+
+                    // Store in localStorage
+                    localStorage.setItem('attendance_students', JSON.stringify(sampleData.students));
+                    localStorage.setItem('attendance_records', JSON.stringify(sampleData.attendance));
+
+                    showLoading(false);
+                    showStatus('✅ Sample data loaded successfully! You can now test the attendance system.', 'success');
+                    document.getElementById('preview').style.display = 'block';
+                    
+                    // Auto-redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                } catch (error) {
+                    showLoading(false);
+                    showStatus('❌ Error loading sample data: ' + error.message, 'error');
+                }
+            }, 1000);
+        }
+
+        function goToApp() {
+            window.location.href = 'index.html';
+        }
+
+        // Show preview on load
+        window.addEventListener('load', () => {
+            document.getElementById('preview').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
